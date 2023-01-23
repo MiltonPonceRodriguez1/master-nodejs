@@ -29,5 +29,7 @@ router.get('/article/:id', ArticleController.detail);
 router.delete('/article/:id', ArticleController.delete_article);
 router.put('/article/:id', ArticleController.update);
 router.post('/image-upload/:id', [uploads.single('file0')], ArticleController.upload);
+router.get('/image/:file', ArticleController.image);
+router.get('/search/:key', ArticleController.search);
 // Exportar Modulo de rutas
 module.exports = router;

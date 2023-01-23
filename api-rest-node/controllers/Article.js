@@ -1,6 +1,7 @@
 /* SE PUEDEN TRABAJAR CONTROLADORES COMO PROGRAMACIÓN FUNCIONAL O POO */
 const { articleValidator } = require('../helpers/validation')
 const fs = require('fs');
+const path = require('path');
 /* IMPORTAR MODELOS */
 const Article = require('../models/Article');
 
@@ -190,15 +191,61 @@ const upload = (req, res) => {
         });
     } else {
         // Si todo va bien, actualizar articulo
+        let id = req.params.id;
 
-        // Devolver respuesta
-        return res.status(200).json({
-            status: "success",
-            files: req.file
+        Article.findByIdAndUpdate(id, {image: req.file.filename}, {new: true}, (error, article) =>{
+            if (error || !article) {
+                data = errorData(500, 'Error al actualizar el articulo!');
+                return res.status(data.code).json(data);
+            }
+
+            // Devolver respuesta
+            return res.status(200).json({
+                status: "success",
+                article,
+                file: req.file
+            });
         });
     }
+}
 
+const image = (req, res) => {
+    let file = req.params.file;
+    let file_path = `./images/articles/${file}`;
 
+    fs.stat(file_path, (error, exist) =>{
+        if (error || !exist) {
+            data = errorData(404, 'La imagen no existe');
+            data.path = file_path;
+            data.file = file;
+            return res.status(data.code).json(data);
+        }
+
+        return res.sendFile(path.resolve(file_path));
+    });
+}
+
+const search= (req, res) => {
+    // Obtener string de busqueada
+    let key = req.params.key;
+
+    // Find OR
+    Article.find({"$or": [
+        {title: {"$regex": key, "$options": "i"}},
+        {content: {"$regex": key, "$options": "i"}}
+    ]})
+    .sort({'date': -1})
+    .exec((error, articles) => {
+        if (error || !articles || articles.length < 1) {
+            data = errorData(404, 'No hay articulos coincidentes!');
+            return res.status(data.code).json(data);
+        }
+
+        return res.status(200).json({
+            status: "success",
+            articles
+        });
+    });
 }
 
 module.exports = {
@@ -209,5 +256,7 @@ module.exports = {
     detail,
     update,
     delete_article,
-    upload
+    upload,
+    image,
+    search
 }
