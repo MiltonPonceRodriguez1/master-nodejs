@@ -12,6 +12,7 @@ const auth = require('../middlewares/auth');
 router.get('/test-user', auth.verify, UserController.user_test);
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
+router.get('/profile/:id', auth.verify, UserController.profile);
 
 // EXPORTACION DEL ROUTER
 module.exports = router;

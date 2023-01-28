@@ -110,8 +110,31 @@ const login = (req, res) => {
         });
 }
 
+const profile = (req, res) => {
+    // RECOGER PARAMETRO ID DEL USER
+    const id = req.params.id;
+
+    // CONSULTA PARA SACAR LOS DATOS DEL USUARIO
+    User.findById(id)
+        .select({password: 0, role: 0})
+        .exec((error, user) => {
+            if (error || !user) {
+                return res.status(404).json({status: 'error', message: 'El usuario no existe!'});
+            }
+
+            // DEVOLVER EL RESULTADO
+            // POSTERIORMENTE DEVOLVER INFORMACIÓN DE FOLLOWS
+            return res.status(200).json({
+                status: 'success',
+                message: 'Todo bien xd',
+                user
+            });
+        });
+}
+
 module.exports = {
     user_test,
     register,
-    login
+    login,
+    profile
 }
