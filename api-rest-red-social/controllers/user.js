@@ -1,6 +1,7 @@
 // IMPORTACION DE DEPENDENCIAS
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const jwt = require('../services/jwt');
 
 // DATA DE ERROR
 const error_data = (status, msg) => {
@@ -11,9 +12,10 @@ const error_data = (status, msg) => {
     }
 }
 // ACCION DE PRUEBA
-const userTest = (req, res) => {
+const user_test = (req, res) => {
     return res.status(200).send({
-        message: "Mensaje enviado desde: controllers/user.js"
+        message: "Mensaje enviado desde: controllers/user.js",
+        user: req.user
     });
 }
 
@@ -63,7 +65,53 @@ const register = (req, res) => {
     });
 }
 
+const login = (req, res) => {
+    // RECOGER PARAMS BODY
+    let params = req.body;
+    let data = error_data(500, 'Faltan datos');
+
+    if (!params.email || !params.password) {
+        return res.status(data.code).json(data);
+    }
+
+    // BUSCAR EN LA BBDD SI EXISTE
+    User.findOne({email: params.email})
+        // .select({password: 0})
+        .exec((error, user) => {
+            if (error || !user) {
+                data.message = 'No existe el usuario';
+                return res.status(data.code).json(data);
+            }
+
+            // COMPROBAR SU CONTRASEÑA
+            const pwd = bcrypt.compareSync(params.password, user.password);
+
+            if(!pwd) {
+                data.message = 'No te has identificado correctamente!';
+                return res.status(data.code).json(data);
+            }
+
+            // OBTENER TOKEN
+            const token = jwt.create_token(user);
+
+            // DEVOLVER DATOS DE USUARIO
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Te has identificado correctamente!',
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    surname: user.surname,
+                    nick: user.nick
+                },
+                token
+            });
+        });
+}
+
 module.exports = {
-    userTest,
-    register
+    user_test,
+    register,
+    login
 }
