@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('../services/jwt');
+const mongoose_pagination = require('mongoose-pagination');
 
 // DATA DE ERROR
 const error_data = (status, msg) => {
@@ -126,15 +127,45 @@ const profile = (req, res) => {
             // POSTERIORMENTE DEVOLVER INFORMACIÓN DE FOLLOWS
             return res.status(200).json({
                 status: 'success',
-                message: 'Todo bien xd',
                 user
             });
         });
+}
+
+const list = (req,res) => {
+    // CONTROLAR EN QUE PAGINA ESTAMOS
+    let page = (req.params.page) ? parseInt(req.params.page) : 1;
+    let data = error_data(404, 'No existen usuarios!');
+
+    // CONSULTA CON MONGOOSE PAGINATE
+    let items_per_page = 5;
+
+    User.find().sort('_id').paginate(page, items_per_page, (error, users, total) => {
+
+        if (error || !users)  return res.status(data.code).json(data);
+
+        const pages = Math.ceil(total/items_per_page);
+
+        if (pages < page) {
+            data.message = 'No existen usuarios con ese número de página!';
+            return res.status(data.code).json(data);
+        }
+
+        // DEVOLVER RESULTADO (POSTERIORMENTE INFO FOLLOWS)
+        return res.status(200).json({
+            status: 'success',
+            users,
+            page,
+            total,
+            pages
+        });
+    });
 }
 
 module.exports = {
     user_test,
     register,
     login,
-    profile
+    profile,
+    list
 }
