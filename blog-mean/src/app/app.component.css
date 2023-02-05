@@ -1,9 +1,10 @@
 /* ESTILOS GENERALES */
-nav {
-    background-color: #4c58de;
+.spa-content{
+    min-height: 600px;
 }
 
 .brand-logo {
     color: #fafafa;
     text-shadow: 3px 2px 3px black;
+    padding-left: 1%;
 }

@@ -1,4 +1,5 @@
 <div>
+  <!-- NAVBAR PC -->
   <ul id="dropdown1" class="dropdown-content">
     <li><a [routerLink]="['/article-new']">New Article</a></li>
     <li><a href="#!">two</a></li>
@@ -6,28 +7,71 @@
     <li><a href="#!">three</a></li>
   </ul>
 
-  <nav>
+  <nav class="blue darken-3">
     <div class="nav-wrapper">
       <a [routerLink]="['/home']" class="brand-logo">Blog MEAN Stack</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="sass.html"><i class="material-icons left">cloud</i>Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
-        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li>
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+            <i class="material-icons left">newspaper</i>
+            Articles Manager
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
+  <!-- FIN NAVBAR PC -->
 
-  <ul class="sidenav" id="mobile-demo">
-    <li><a href="sass.html">Sass</a></li>
-    <li><a href="badges.html">Components</a></li>
-    <li><a href="collapsible.html">Javascript</a></li>
-    <li><a href="mobile.html">Mobile</a></li>
+  <!-- NAVBAR MOBILE -->
+  <ul id="dropdown2" class="dropdown-content">
+    <li><a [routerLink]="['/article-new']">New Article</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">three</a></li>
   </ul>
 
+  <ul class="sidenav" id="mobile-demo">
+    <li>
+      <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+        <i class="material-icons left">newspaper</i>
+        Articles Manager
+        <i class="material-icons right">arrow_drop_down</i>
+      </a>
+    </li>
+  </ul>
+  <!-- FIN NAVBAR MOBILE -->
+
   <!-- CONTENIDO -->
-  <router-outlet></router-outlet>
+  <div class="spa-content">
+    <router-outlet></router-outlet>
+  </div>
   <!-- FIN CONTENIDO -->
+
+  <!-- FOOTER -->
+  <footer class="page-footer blue darken-3">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Milton Ponce Rodriguez</h5>
+          <p class="grey-text text-lighten-4">Ingeniero en Computación, Desarrollador Web, Desarrollador de Software, Desarrollador Backend.</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Contacto</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="#!">Portafolio</a></li>
+            <li>Email: miltonponceipn@gmail.com</li>
+            <li>Celular: 55-52-10-52-57</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container center-align">
+        © 2023 Blog MEAN Stack
+      </div>
+    </div>
+  </footer>
+  <!-- FIN FOOTER -->
 </div>
