@@ -2,3 +2,8 @@
 nav {
     background-color: #4c58de;
 }
+
+.brand-logo {
+    color: #fafafa;
+    text-shadow: 3px 2px 3px black;
+}

@@ -226,7 +226,7 @@ const image = (req, res) => {
 }
 
 const search= (req, res) => {
-    // Obtener string de busqueada
+    // ? Obtener string de busqueada
     let key = req.params.key;
 
     // Find OR
