@@ -1,55 +1,40 @@
-<div class="">
+<div class="container" *ngIf="!articles">
+   <p class="center-align"><i><strong>Cargando...</strong></i></p>
+   <div class="progress">
+      <div class="indeterminate"></div>
+   </div>
+</div>
+
+<div *ngIf="articles">
+   <div>
+      <h4 class="center-align">{{page_title}}</h4>
+   </div>
+
    <div class="row">
-      <div class="col s12 m6 l3">
+      <div class="col s12 m6 l3" *ngFor="let article of articles">
          <div class="card">
             <div class="card-image">
-               <img src="https://m.media-amazon.com/images/M/MV5BZTI2Yzc1MTctMTIzOS00ZDljLTkzMDgtZDdiMWJiZWMxNjU2XkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg">
-               <span class="card-title">Card Title</span>
-               <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">visibility</i></a>
-            </div>
-            <div class="card-content">
-               <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-            </div>
-         </div>
-      </div>
+               <!-- CONDICIONAL PARA MOSTRAR IMAGEN -->
+               <div *ngIf="article.image != 'default.png'; then thenBlockImage else elseBlockImage"></div>
+               <ng-template #thenBlockImage>
+                  <img src="{{url}}image/{{article.image}}">
+               </ng-template>
+               <ng-template #elseBlockImage>
+                  <img src="https://materializecss.com/images/sample-1.jpg">
+               </ng-template>
+               <!-- FIN CONDICIONAL PARA MOSTRAR IMAGEN -->
 
-      <div class="col s12 m6 l3">
-         <div class="card">
-            <div class="card-image">
-               <img src="https://materializecss.com/images/sample-1.jpg">
-               <span class="card-title">Card Title</span>
+               <span class="card-title">{{article.title}}</span>
                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">visibility</i></a>
             </div>
             <div class="card-content">
-               <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+               <p class="truncate">{{article.content}}</p>
             </div>
-         </div>
-      </div>
-
-      <div class="col s12 m6 l3">
-         <div class="card">
-            <div class="card-image">
-               <img src="https://areajugones.sport.es/wp-content/uploads/2022/03/dragon-ball-z-ss3-1080x609.jpg">
-               <span class="card-title">Card Title</span>
-               <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">visibility</i></a>
-            </div>
-            <div class="card-content">
-               <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-            </div>
-         </div>
-      </div>
-
-      <div class="col s12 m6 l3">
-         <div class="card">
-            <div class="card-image">
-               <img src="assets/images/s-l500.jpg">
-               <span class="card-title">Card Title</span>
-               <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">visibility</i></a>
-            </div>
-            <div class="card-content">
-               <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+            <div class="card-action center-align">
+               {{article.date}}
             </div>
          </div>
       </div>
    </div>
+
 </div>
