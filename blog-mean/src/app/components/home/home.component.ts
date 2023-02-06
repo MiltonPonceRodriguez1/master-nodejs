@@ -21,15 +21,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this._articleService.test());
-
-    this._articleService.test_api().subscribe(
+    this._articleService.get_articles().subscribe(
       response => {
         if (response.status == 'success') {
           this.articles = response.articles;
-          console.log(this.articles);
         }
-        console.log(response);
       },
       error => {
         console.log(<any>error);

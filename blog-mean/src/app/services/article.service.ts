@@ -19,10 +19,18 @@ export class ArticleService {
         return "Hola mundo desde un servicio!";
     }
 
-    test_api (): Observable<any> {
-        let data = {}
+    get_articles (): Observable<any> {
+        let data = {};
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
         return this._http.get(`${this.url}articles`, {headers: headers});
+    }
+
+    create (article: any): Observable<any> {
+        article.date = Date.now();
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+        return this._http.post(`${this.url}create`, article, {headers: headers});
     }
 }
