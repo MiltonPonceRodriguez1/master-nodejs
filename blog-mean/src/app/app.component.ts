@@ -26,6 +26,11 @@ export class AppComponent implements OnInit{
       var instances = M.Materialbox.init(elems, {});
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.tooltipped');
+      var instances = M.Tooltip.init(elems, {});
+    });
+
   }
 
 }
