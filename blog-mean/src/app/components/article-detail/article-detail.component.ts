@@ -12,6 +12,9 @@ const init_materilize_compos = () => {
 
   elems = document.querySelectorAll('.fixed-action-btn');
   M.FloatingActionButton.init(elems, {});
+
+  elems = document.querySelectorAll('.modal');
+  M.Modal.init(elems, {});
 }
 
 @Component({
@@ -20,6 +23,7 @@ const init_materilize_compos = () => {
   styleUrls: ['./article-detail.component.css'],
   providers: [ArticleService]
 })
+
 export class ArticleDetailComponent implements OnInit {
   public article: Article;
   public url: string;
@@ -33,10 +37,7 @@ export class ArticleDetailComponent implements OnInit {
     this.article = new Article(NaN, '', '', null, 'default.png');
   }
 
-
-
   ngOnInit(): void {
-
     init_materilize_compos();
 
     this._route.params.subscribe(params => {
@@ -46,9 +47,6 @@ export class ArticleDetailComponent implements OnInit {
         response => {
           if (response.status == 'success') {
             this.article = response.article;
-            console.log(this.article);
-            console.log(this.article.date);
-
           }
         },
         error => {

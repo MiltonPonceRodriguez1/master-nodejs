@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ArticleService } from "../../services/article.service";
 import { Article } from "../../models/article";
 
@@ -9,7 +9,7 @@ import { Article } from "../../models/article";
   providers: [ArticleService]
 })
 
-export class ArticleNewComponent implements OnInit {
+export class ArticleNewComponent {
   public page_title: string;
   public article: Article;
 
@@ -20,11 +20,6 @@ export class ArticleNewComponent implements OnInit {
     this.article = new Article(NaN, '', '', '', 'default.png');
   }
 
-  ngOnInit(): void {
-    let date = Date.now();
-    console.log(date.toLocaleString());
-
-  }
 
   onSubmit(form: any) {
     this._articleService.create(this.article).subscribe(
