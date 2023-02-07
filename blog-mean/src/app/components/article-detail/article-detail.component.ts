@@ -6,7 +6,7 @@ import { global } from "../../services/global";
 
 declare var M: any;
 
-const init_mat = () => {
+const init_materilize_compos = () => {
   let elems = document.querySelectorAll('.tooltipped');
   M.Tooltip.init(elems, {});
 
@@ -37,9 +37,7 @@ export class ArticleDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-
-    init_mat();
+    init_materilize_compos();
 
     this._route.params.subscribe(params => {
       let id = params['id'];
