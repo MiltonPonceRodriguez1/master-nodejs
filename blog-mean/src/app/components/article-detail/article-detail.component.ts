@@ -6,6 +6,14 @@ import { global } from "../../services/global";
 
 declare var M: any;
 
+const init_mat = () => {
+  let elems = document.querySelectorAll('.tooltipped');
+  M.Tooltip.init(elems, {});
+
+  elems = document.querySelectorAll('.fixed-action-btn');
+  M.FloatingActionButton.init(elems, {});
+}
+
 @Component({
   selector: 'app-article-detail',
   templateUrl: './article-detail.component.html',
@@ -23,29 +31,26 @@ export class ArticleDetailComponent implements OnInit {
   ) {
     this.url = global.url;
     this.article = new Article(NaN, '', '', null, 'default.png');
-    document.addEventListener('DOMContentLoaded', function() {
-      let test_var = "milton";
-      const elems = document.querySelectorAll('.fixed-action-btn');
-      const instances = M.FloatingActionButton.init(elems, {direction: 'left'});
-      console.log(elems);
-      console.log(test_var);
-
-    });
   }
+
+
 
   ngOnInit(): void {
 
 
-    console.log("XD");
+
+    init_mat();
+
     this._route.params.subscribe(params => {
       let id = params['id'];
-      console.log(id);
 
       this._articleService.get_article(id).subscribe(
         response => {
           if (response.status == 'success') {
             this.article = response.article;
             console.log(this.article);
+            console.log(this.article.date);
+
           }
         },
         error => {

@@ -9,6 +9,7 @@ import { Article } from "../../models/article";
   styleUrls: ['./home.component.css'],
   providers: [ArticleService]
 })
+
 export class HomeComponent implements OnInit {
   public page_title: string;
   public articles: any = null;
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this._articleService.get_articles().subscribe(
       response => {
+        console.log(response);
+
         if (response.status == 'success') {
           this.articles = response.articles;
         }
@@ -31,5 +34,14 @@ export class HomeComponent implements OnInit {
         console.log(<any>error);
       }
     );
+  }
+
+  format_date(date: any) {
+    return new Date(date).toLocaleDateString('en-us', {
+      weekday:"long",
+      year:"numeric",
+      month:"short",
+      day:"2-digit"
+    });
   }
 }
