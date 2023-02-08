@@ -2,18 +2,15 @@
   <!-- NAVBAR PC -->
   <ul id="dropdown1" class="dropdown-content">
     <li><a [routerLink]="['/article-new']">New Article</a></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">three</a></li>
   </ul>
 
   <nav class="blue darken-3">
     <div class="nav-wrapper">
-      <a [routerLink]="['/home']" class="brand-logo">Blog MEAN Stack</a>
+      <a [routerLink]="['/home']" class="brand-logo tooltipped" data-position="bottom" data-tooltip="MEAN: MongoDB, Express, Angular, NodeJS">Blog MEAN Stack</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li>
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+          <a class="dropdown-trigger" data-target="dropdown1">
             <i class="material-icons left">newspaper</i>
             Articles Manager
             <i class="material-icons right">arrow_drop_down</i>
@@ -27,14 +24,11 @@
   <!-- NAVBAR MOBILE -->
   <ul id="dropdown2" class="dropdown-content">
     <li><a [routerLink]="['/article-new']">New Article</a></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">three</a></li>
   </ul>
 
   <ul class="sidenav" id="mobile-demo">
     <li>
-      <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+      <a class="dropdown-trigger" data-target="dropdown2">
         <i class="material-icons left">newspaper</i>
         Articles Manager
         <i class="material-icons right">arrow_drop_down</i>

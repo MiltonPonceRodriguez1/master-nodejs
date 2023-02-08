@@ -34,8 +34,13 @@ export class ImageUploadComponent {
 
     this._articleService.upload(this.image, id).subscribe(
       response => {
-        console.log(response);
-        this._router.navigate(['/home']);
+        if (response.status == 'success') {
+          M.toast({
+            html: 'Imagen del articulo actualizada correctamente!',
+            classes: 'green accent-4'
+          });
+          this._router.navigate(['/home']);
+        }
       },
       error => {
         M.toast({

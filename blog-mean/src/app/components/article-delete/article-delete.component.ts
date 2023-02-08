@@ -30,7 +30,6 @@ export class ArticleDeleteComponent {
 
     this._articleService.delete_article(id).subscribe(
       response => {
-        console.log(response);
         if (response.status == 'success') {
           M.toast({
             html: 'Article successfully removed!',

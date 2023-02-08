@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
 import { Article } from "../../models/article";
 
@@ -16,7 +17,8 @@ export class ArticleNewComponent {
   public article: Article;
 
   constructor(
-    private _articleService: ArticleService
+    private _articleService: ArticleService,
+    private _router: Router
   ) {
     this.page_title = 'Add a new article';
     this.article = new Article(NaN, '', '', '', 'default.png');
@@ -30,8 +32,8 @@ export class ArticleNewComponent {
             html: `${response.message}`,
             classes: 'green accent-4'
           });
+          this._router.navigate(['/home']);
         }
-        console.log(response);
       },
       error => {
         M.toast({

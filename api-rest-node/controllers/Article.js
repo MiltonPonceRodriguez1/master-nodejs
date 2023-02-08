@@ -155,12 +155,13 @@ const update = (req, res) => {
 
     Article.findByIdAndUpdate(id, params, {new: true}, (error, article) => {
         if (error || !article) {
-            data = errorData(500, 'No se encontro el articulo a actualizar function');
+            data = errorData(500, 'No se encontro el articulo a actualizar!');
             return res.status(data.code).json(data);
         }
 
         return res.status(200).json({
             status: "success",
+            message: "Articulo Actualizado Correctamente!",
             article
         });
     });

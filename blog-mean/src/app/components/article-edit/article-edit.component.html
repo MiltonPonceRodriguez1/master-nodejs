@@ -1,0 +1,37 @@
+
+<!-- Modal Structure -->
+<div id="modal-edit" class="modal modal-fixed-footer">
+    <form class="col s12" #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)">
+        <div class="modal-content">
+            <h5>{{page_title}}</h5>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">title</i>
+                    <input id="title" type="text" class="validate" name="title" [(ngModel)]="article.title">
+                    <label class="active" for="title">Title</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">format_list_bulleted</i>
+                    <textarea id="content" class="materialize-textarea" name="content" [(ngModel)]="article.content"></textarea>
+                    <label class="active" for="content">Content</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">
+                Cancel
+                <i class="material-icons right">close</i>
+            </a>
+
+            <button class="modal-close waves-effect waves-green btn-flat" type="submit" name="action">
+                Submit
+                <i class="material-icons right">update</i>
+            </button>
+        </div>
+    </form>
+</div>
