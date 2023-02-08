@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
+import { DataService } from "../../services/data.service";
 import { Article } from "../../models/article";
 import { global } from "../../services/global";
 
@@ -31,7 +32,8 @@ export class ArticleDetailComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
-    private _articleService: ArticleService
+    private _articleService: ArticleService,
+    private _dataService: DataService
   ) {
     this.url = global.url;
     this.article = new Article(NaN, '', '', null, 'default.png');
@@ -47,6 +49,8 @@ export class ArticleDetailComponent implements OnInit {
         response => {
           if (response.status == 'success') {
             this.article = response.article;
+            this._dataService.article = response.article;
+            console.log("DETAIL: ", this._dataService.article);
           }
         },
         error => {
