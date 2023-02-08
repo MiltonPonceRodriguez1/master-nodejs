@@ -1,3 +1,8 @@
 .input-file-image {
     margin-top: 5%;
 }
+
+.modal-upload-image {
+    top: 25% !important;
+    height: 45% !important;
+}

@@ -9,6 +9,7 @@ import { ArticleNewComponent } from './components/article-new/article-new.compon
 import { HomeComponent } from './components/home/home.component';
 import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { ArticleDeleteComponent } from './components/article-delete/article-delete.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
     ArticleNewComponent,
     HomeComponent,
     ArticleDetailComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    ArticleDeleteComponent
   ],
   imports: [
     BrowserModule,
