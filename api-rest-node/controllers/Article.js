@@ -66,7 +66,7 @@ const create = (req, res) => {
         // Devolver respuesta
         return res.status(200).json({
             status: "success",
-            msg: "Articulo creado con exito",
+            message: "Articulo creado con exito",
             article: article
         });
     });

@@ -50,14 +50,12 @@ export class ArticleDetailComponent implements OnInit {
           if (response.status == 'success') {
             this.article = response.article;
             this._dataService.article = response.article;
-            console.log("DETAIL: ", this._dataService.article);
           }
         },
         error => {
           console.log(<any>error);
         }
       );
-
     });
   }
 

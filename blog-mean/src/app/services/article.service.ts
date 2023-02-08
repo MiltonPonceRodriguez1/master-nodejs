@@ -42,4 +42,9 @@ export class ArticleService {
 
         return this._http.post(`${this.url}image-upload/${id}`, formData);
     }
+
+    delete_article(id: any): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+        return this._http.delete(`${this.url}article/${id}`, {headers: headers});
+    }
 }

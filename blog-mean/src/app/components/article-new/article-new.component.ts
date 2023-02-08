@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ArticleService } from "../../services/article.service";
 import { Article } from "../../models/article";
 
+declare var M: any;
+
 @Component({
   selector: 'app-article-new',
   templateUrl: './article-new.component.html',
@@ -20,16 +22,23 @@ export class ArticleNewComponent {
     this.article = new Article(NaN, '', '', '', 'default.png');
   }
 
-
   onSubmit(form: any) {
     this._articleService.create(this.article).subscribe(
       response => {
+        if (response.status == 'success') {
+          M.toast({
+            html: `${response.message}`,
+            classes: 'green accent-4'
+          });
+        }
         console.log(response);
       },
       error => {
-        console.log(<any>error);
+        M.toast({
+          html: `${error.error.message}`,
+          classes: 'red accent-4'
+        });
       }
     );
-    console.log(this.article);
   }
 }

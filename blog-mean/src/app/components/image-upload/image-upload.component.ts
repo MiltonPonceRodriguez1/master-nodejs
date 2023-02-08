@@ -31,18 +31,18 @@ export class ImageUploadComponent {
 
   onSubmit(form: any) {
     const id = this._dataService.article._id;
-    console.log("ID: ", id);
 
     this._articleService.upload(this.image, id).subscribe(
       response => {
         console.log(response);
         this._router.navigate(['/home']);
-        // this._router.navigate(['/home']);
       },
       error => {
-        console.log(<any>error);
+        M.toast({
+          html: `${error.error.message}`,
+          classes: 'red accent-4'
+        });
       }
     );
-
   }
 }
