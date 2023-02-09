@@ -2,3 +2,11 @@
     height: 250px;
     object-fit: cover;
 }
+
+h4 {
+    text-shadow: 1px 1px 1px grey !important;
+}
+
+span {
+    text-shadow: 2px 2px 2px black !important;
+}

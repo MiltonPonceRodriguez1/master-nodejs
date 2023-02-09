@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   constructor (
     private _articleService: ArticleService
   ) {
-    this.page_title = 'Home Page';
+    this.page_title = 'Last articles';
   }
 
   ngOnInit(): void {
