@@ -1,10 +1,13 @@
 // IMPORTACION DE DEPENDENCIAS
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const jwt = require('../services/jwt');
 const mongoose_pagination = require('mongoose-pagination');
 const path = require('path');
 const fs = require('fs');
+
+// IMPORTACION DE SERVICIOS
+const FollowService = require('../services/followService');
+const jwt = require('../services/jwt');
 
 // DATA DE ERROR
 const error_data = (status, msg) => {
@@ -120,16 +123,20 @@ const profile = (req, res) => {
     // CONSULTA PARA SACAR LOS DATOS DEL USUARIO
     User.findById(id)
         .select({password: 0, role: 0})
-        .exec((error, user) => {
+        .exec(async(error, user) => {
             if (error || !user) {
                 return res.status(404).json({status: 'error', message: 'El usuario no existe!'});
             }
 
+            // INFORMACIÓN DE SEGUIMIENTO
+            const follow_info = await FollowService.followThisUser(req.user.id, id);
+
             // DEVOLVER EL RESULTADO
-            // POSTERIORMENTE DEVOLVER INFORMACIÓN DE FOLLOWS
             return res.status(200).json({
                 status: 'success',
-                user
+                user,
+                following: follow_info.following,
+                follower: follow_info.follower
             });
         });
 }
@@ -142,7 +149,7 @@ const list = (req,res) => {
     // CONSULTA CON MONGOOSE PAGINATE
     let items_per_page = 5;
 
-    User.find().sort('_id').paginate(page, items_per_page, (error, users, total) => {
+    User.find().sort('_id').paginate(page, items_per_page, async(error, users, total) => {
 
         if (error || !users)  return res.status(data.code).json(data);
 
@@ -153,13 +160,18 @@ const list = (req,res) => {
             return res.status(data.code).json(data);
         }
 
+        // SACAR UN ARRAY DE LOS ID's DE LOS USUARIOS QUE ME SIGUEN Y LOS QUE SIGO COMO IDENTITY
+        const user_follows = await FollowService.followUserIds(req.user.id);
+
         // DEVOLVER RESULTADO (POSTERIORMENTE INFO FOLLOWS)
         return res.status(200).json({
             status: 'success',
             users,
             page,
             total,
-            pages
+            pages,
+            user_following: user_follows.following,
+            user_follow_me: user_follows.followers
         });
     });
 }

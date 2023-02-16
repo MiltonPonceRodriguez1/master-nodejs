@@ -10,6 +10,8 @@ const FollowController = require('../controllers/follow');
 router.get('/test-follow', FollowController.follow_test);
 router.post('/save', auth.verify, FollowController.save);
 router.delete('/unfollow/:id', auth.verify, FollowController.unfollow)
+router.get('/following/:id?/:page?', auth.verify, FollowController.following);
+router.get('/followers/:id?/:page?', auth.verify, FollowController.followers)
 
 // EXPORTACIÓN DEL ROUTER
 module.exports = router;
