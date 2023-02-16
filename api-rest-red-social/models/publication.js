@@ -17,4 +17,4 @@ const PublicationSchema = Schema({
     }
 });
 
-module.export = model('Publication', PublicationSchema, 'publications');
+module.exports = model('Publication', PublicationSchema, 'publications');
