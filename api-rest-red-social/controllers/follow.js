@@ -91,7 +91,7 @@ const following = (req, res) => {
 
     // FIND A FOLLOWS, POPULAR DATOS DE LOS USUARIOS (OBTENER OBJETOS) Y PAGINAR CON MONGOOSE PAGINATE
     Follow.find({user: id})
-        .populate('user followed', '-password -role -__v')
+        .populate('user followed', '-password -role -__v -email')
         .paginate(page, items_per_page, async(error, follows, total) => {
             // SACAR UN ARRAY DE LOS ID's DE LOS USUARIOS QUE ME SIGUEN Y LOS QUE SIGO COMO IDENTITY
             const user_follows = await FollowService.followUserIds(req.user.id);
@@ -120,7 +120,7 @@ const followers = (req, res) => {
     const items_per_page = 3;
 
     Follow.find({followed: id})
-        .populate('user followed', '-password -role -__v')
+        .populate('user followed', '-password -role -__v -email')
         .paginate(page, items_per_page, async(error, follows, total) => {
             if (error) return res.status(400).json({status: 'error', message: 'Error al hacer la consulta!'});
 

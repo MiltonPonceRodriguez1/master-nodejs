@@ -1,13 +1,18 @@
 // IMPORTACION DE DEPENDENCIAS
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
 const mongoose_pagination = require('mongoose-pagination');
 const path = require('path');
 const fs = require('fs');
 
 // IMPORTACION DE SERVICIOS
 const FollowService = require('../services/followService');
+const validate = require('../helpers/validate');
 const jwt = require('../services/jwt');
+
+// IMPORTACION DE MODELOS
+const User = require('../models/user');
+const Follow = require('../models/follow');
+const Publication = require('../models/publication');
 
 // DATA DE ERROR
 const error_data = (status, msg) => {
@@ -27,17 +32,21 @@ const user_test = (req, res) => {
 
 // REGISTRO DE USUARIOS
 const register = (req, res) => {
-    // RECOGER DATOS DE LA PETICIÓN
+    // Recoger datos de la petición
     let params = req.body;
-    let data = {};
+    let data = error_data(404, 'Faltan datos por enviar!');;
 
-    // COMPROBAR QUE LLEGEN BIEN LOS DATOS (+VALIDACIÓN)
-    if (!params.name || !params.nick || !params.email || !params.password) {
-        data = error_data(404, 'Faltan datos por enviar!')
-        return res.status(data.code).json(data)
+    // Comprobar que lleguen bien los datos
+    if (!params.name || !params.nick || !params.email || !params.password) return res.status(data.code).json(data);
+
+    // Validación avanzada
+    try {
+        validate(params);
+    } catch(error) {
+        return res.status(500).json({status: 'error', message: 'Los datos introducidos no son validos!'});
     }
 
-    // CONTROL DE USUARIOS DUPLICADOS
+    // Control de usuarios duplicados
     User.find({ $or: [
         {email: params.email.toLowerCase()},
         {nick: params.nick.toLowerCase()}
@@ -51,17 +60,17 @@ const register = (req, res) => {
             });
         }
 
-        // CIFRADO DE CONTRASEÑA
+        // Cifrado de contraseña
         params.password = await bcrypt.hash(params.password, 10);
 
-        // CREAR OBJETO USUARIO
+        // Crear objeto usuario
         let user = new User(params);
 
-        // GUARDAR USUARIO EN LA BBDD
+        // Guardar usuario en la bbdd
         user.save((error, user) => {
             if (error || !user) return res.status(500).json({status: 'error', message: 'Error al registrar el usuario'});
 
-             // DEVOLVER EL RESULTADO
+             // Devolver respuesta
             return res.status(200).json({
                 status: 'success',
                 message: 'Usuario registrado correctamente!',
@@ -149,31 +158,34 @@ const list = (req,res) => {
     // CONSULTA CON MONGOOSE PAGINATE
     let items_per_page = 5;
 
-    User.find().sort('_id').paginate(page, items_per_page, async(error, users, total) => {
+    User.find()
+        .select('-password -email -__v -role')
+        .sort('_id')
+        .paginate(page, items_per_page, async(error, users, total) => {
 
-        if (error || !users)  return res.status(data.code).json(data);
+            if (error || !users)  return res.status(data.code).json(data);
 
-        const pages = Math.ceil(total/items_per_page);
+            const pages = Math.ceil(total/items_per_page);
 
-        if (pages < page) {
-            data.message = 'No existen usuarios con ese número de página!';
-            return res.status(data.code).json(data);
-        }
+            if (pages < page) {
+                data.message = 'No existen usuarios con ese número de página!';
+                return res.status(data.code).json(data);
+            }
 
-        // SACAR UN ARRAY DE LOS ID's DE LOS USUARIOS QUE ME SIGUEN Y LOS QUE SIGO COMO IDENTITY
-        const user_follows = await FollowService.followUserIds(req.user.id);
+            // SACAR UN ARRAY DE LOS ID's DE LOS USUARIOS QUE ME SIGUEN Y LOS QUE SIGO COMO IDENTITY
+            const user_follows = await FollowService.followUserIds(req.user.id);
 
-        // DEVOLVER RESULTADO (POSTERIORMENTE INFO FOLLOWS)
-        return res.status(200).json({
-            status: 'success',
-            users,
-            page,
-            total,
-            pages,
-            user_following: user_follows.following,
-            user_follow_me: user_follows.followers
+            // DEVOLVER RESULTADO (POSTERIORMENTE INFO FOLLOWS)
+            return res.status(200).json({
+                status: 'success',
+                users,
+                page,
+                total,
+                pages,
+                user_following: user_follows.following,
+                user_follow_me: user_follows.followers
+            });
         });
-    });
 }
 
 const update = (req, res) => {
@@ -212,6 +224,8 @@ const update = (req, res) => {
         // CIFRAR CONTRASEÑA
         if (params.password) {
             params.password = await bcrypt.hash(params.password, 10);
+        } else {
+            delete params.password;
         }
 
         // ********** BUSCAR Y ACUALIZAR CALBACKS **********
@@ -308,6 +322,27 @@ const avatar = (req, res) => {
 
 }
 
+// CONTADOR
+const counters = async(req, res) => {
+    const user_id = (req.params.id) ? req.params.id : req.user.id;
+
+    try {
+        const following = await Follow.count({user: user_id});
+        const followed = await Follow.count({followed: user_id});
+        const publications = await Publication.count({user: user_id});
+
+        return res.status(200).json({
+            status: 'success',
+            user_id,
+            following,
+            followed,
+            publications
+        });
+    } catch(error) {
+        return res.status(500).json({status: 'error', message: 'Error en hacer el conteo!'});
+    }
+}
+
 module.exports = {
     user_test,
     register,
@@ -316,5 +351,6 @@ module.exports = {
     list,
     update,
     upload,
-    avatar
+    avatar,
+    counters
 }
