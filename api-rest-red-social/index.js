@@ -24,10 +24,12 @@ app.use(express.urlencoded({extended: true}));
 const UserRoutes = require('./routes/user');
 const PublicationRoutes = require('./routes/publication');
 const FollowRoutes = require('./routes/follow');
+const BannerRoutes = require('./routes/banner');
 
 app.use('/api/user', UserRoutes);
 app.use('/api/publication', PublicationRoutes);
 app.use('/api/follow', FollowRoutes);
+app.use('/api/banner', BannerRoutes);
 
 // RUTA DE PRUEBA
 app.get('/test', (req, res) => {

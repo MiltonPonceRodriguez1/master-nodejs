@@ -21,7 +21,8 @@ const save = (req, res) => {
     const params = req.body;
 
     // SI NO ME LLEGAN DAR RESPUESTA NEGATIVA
-    if (!params.text) return res.status(400).json({status: 'error', message: 'Falta enviar Datos!'});
+    // console.log(params);
+    // if (!params.text) return res.status(400).json({status: 'error', message: 'Falta enviar Datos!'});
 
     // INSTANCIAR OBJETO PUBLICATION
     let publication = new Publication(params);
@@ -120,7 +121,6 @@ const upload = (req, res) => {
     // Sacar la extension del archivo
     const image_split = image.split('\.');
     const extension = image_split[1];
-    console.log(extension);
 
     // Comprobar extension
     if (extension != 'png' && extension != 'jpg' && extension != 'jpeg' && extension != 'gif') {
@@ -167,7 +167,7 @@ const feed = async(req, res) => {
     const page = (req.params.page) ? parseInt(req.params.page): 1;
 
     // Establecer numero de elementos por pagina
-    const items_per_page = 5;
+    const items_per_page = 10;
 
     // Obtener array de ids de usuarios que yo sigo como usuario identificado
     try {
@@ -175,7 +175,8 @@ const feed = async(req, res) => {
 
             // Find a publicaciones in, ordenar, popular, paginar
             // NOTA: el IN se puede poner igual como => user: my_follows.following
-            Publication.find({user: {'$in': my_follows.following}})
+            // Publication.find({user: {'$in': my_follows.following}})
+            Publication.find()
                 .populate('user', '-password -role -__v -email')
                 .sort('-created_at')
                 .paginate(page, items_per_page, (error, publications, total) => {

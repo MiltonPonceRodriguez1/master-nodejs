@@ -32,22 +32,25 @@ export class ImageUploadComponent {
   onSubmit(form: any) {
     const id = this._dataService.article._id;
 
-    this._articleService.upload(this.image, id).subscribe(
-      response => {
-        if (response.status == 'success') {
-          M.toast({
-            html: 'Imagen del articulo actualizada correctamente!',
-            classes: 'green accent-4'
-          });
-          this._router.navigate(['/home']);
-        }
-      },
-      error => {
-        M.toast({
-          html: `${error.error.message}`,
-          classes: 'red accent-4'
-        });
-      }
-    );
+    console.log(this.image);
+
+
+    // this._articleService.upload(this.image, id).subscribe(
+    //   response => {
+    //     if (response.status == 'success') {
+    //       M.toast({
+    //         html: 'Imagen del articulo actualizada correctamente!',
+    //         classes: 'green accent-4'
+    //       });
+    //       this._router.navigate(['/home']);
+    //     }
+    //   },
+    //   error => {
+    //     M.toast({
+    //       html: `${error.error.message}`,
+    //       classes: 'red accent-4'
+    //     });
+    //   }
+    // );
   }
 }

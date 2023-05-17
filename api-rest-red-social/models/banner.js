@@ -1,21 +1,23 @@
 // IMPORTACIÓN DE DEPENDENCIAS
 const {Schema, model} = require('mongoose');
 
-const PublicationSchema = Schema({
+const BannerSchema = Schema({
     user: {
         type: Schema.ObjectId,
         ref: 'User'
     },
     text: {
         type: String,
-        required: false,
         default: ''
     },
-    file: String,
+    banner: {
+        type: String,
+        required: true
+    },
     created_at: {
         type: Date,
         default: Date.now
     }
 });
 
-module.exports = model('Publication', PublicationSchema, 'publications');
+module.exports = model('Banner', BannerSchema, 'banners');
